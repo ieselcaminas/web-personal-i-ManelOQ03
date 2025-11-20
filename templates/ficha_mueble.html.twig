@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}Muebles{% endblock %}
+{% block body%}
+<h1>Ficha del mueble</h1>
+    {% if mueble %}
+        {{ include('partials/datos_mueble.html.twig',{'mueble': mueble}) }}
+    {% else %}
+        <h4>Mueble no encontrado</h4>
+    {% endif %}
+
+{% endblock %}

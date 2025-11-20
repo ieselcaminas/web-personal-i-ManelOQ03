@@ -1,0 +1,8 @@
+<ul>
+    <li><strong>{{ mueble.tipo }}</strong></li>
+    <li><strong>Material</strong>: {{ mueble.material }}</li>
+    <li><strong>Acabado</strong>: {{ mueble.acabado }}</li>
+    {% if mueble.tienda %}
+        <li><strong>Tienda</strong>: {{ mueble.tienda.nombre }}</li>
+    {% endif %}
+</ul>

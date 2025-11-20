@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	<h1>Muebles</h1>
+	<h2>Bienvenido a la web de Muebles Ortiz.</h2>
+	<p>Página de inicio</p>
+	{% for mueble in muebles %}
+		 {{ include ('partials/datos_mueble.html.twig', {'mueble': mueble})}}
+	{% endfor %}
+{% endblock %}
