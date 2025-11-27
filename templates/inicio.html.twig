@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
+{% block title %}Muebles Ortiz{% endblock %}
 {% block body %}
-	<h1>Muebles</h1>
-	<h2>Bienvenido a la web de Muebles Ortiz.</h2>
-	<p>Página de inicio</p>
+	<h2>Bienvenido {{ app.user.nombreUsuario }} a la web de Muebles Ortiz.</h2>
+	<h4>Muebles</h4>
+	<a href="/mueble/nuevo" class="button">Nuevo Mueble</a>
 	{% for mueble in muebles %}
 		 {{ include ('partials/datos_mueble.html.twig', {'mueble': mueble})}}
 	{% endfor %}
+	<br>
+    <footer>
+        <a href="/logout" class="button">Cerrar sesión</a>
+    </footer>
 {% endblock %}

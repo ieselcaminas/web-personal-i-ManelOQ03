@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MuebleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MuebleRepository::class)]
 class Mueble
@@ -14,15 +15,19 @@ class Mueble
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $tipo = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $material = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $acabado = null;
 
     #[ORM\ManyToOne]
+    #[Assert\NotBlank]
     private ?Tienda $tienda = null;
 
     public function getId(): ?int

@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\Persistence\ManagerRegistry;
-
+use App\Form\MuebleFormType as MuebleType;
+use Symfony\Component\HttpFoundation\Request;
 
 final class MuebleController extends AbstractController
 {
@@ -18,6 +19,9 @@ final class MuebleController extends AbstractController
 
     #[Route('/mueble/buscar/{texto}', name: 'buscar_mueble')]
     public function buscar(ManagerRegistry $doctrine, $texto): Response{
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
         $repositorio = $doctrine->getRepository(Mueble::class);
         $muebles = $repositorio->findByName($texto);
 
@@ -26,8 +30,87 @@ final class MuebleController extends AbstractController
         ]);
     }
 
+    #[Route('/mueble/nuevo', name: 'nuevo')]
+    public function nuevo(ManagerRegistry $doctrine, Request $request) {
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
+        $mueble = new Mueble();
+        $formulario = $this->createForm(MuebleType::class, $mueble);
+        $formulario->handleRequest($request);
+
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
+            $mueble = $formulario->getData();
+            
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($mueble);
+            $entityManager->flush();
+            return $this->redirectToRoute('ficha_mueble', ["codigo" => $mueble->getId()]);
+        }
+        return $this->render('nuevo.html.twig', array(
+            'formulario' => $formulario->createView()
+        ));
+    }
+
+    #[Route('/mueble/editar/{codigo}', name: 'editar', requirements:["codigo"=>"\d+"])]
+    public function editar(ManagerRegistry $doctrine, Request $request, int $codigo) {
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
+
+        $repositorio = $doctrine->getRepository(Mueble::class);
+
+        //En este caso, los datos los obtenemos del repositorio de muebles
+
+        $mueble = $repositorio->find($codigo);
+
+        if ($mueble){
+
+            $formulario = $this->createForm(MuebleType::class, $mueble);
+
+
+
+            $formulario->handleRequest($request);
+
+
+
+            if ($formulario->isSubmitted() && $formulario->isValid()) {
+
+                //Esta parte es igual que en la ruta para insertar
+
+                $mueble = $formulario->getData();
+
+                $entityManager = $doctrine->getManager();
+
+                $entityManager->persist($mueble);
+
+                $entityManager->flush();
+
+                return $this->redirectToRoute('ficha_mueble', ["codigo" => $mueble->getId()]);
+
+            }
+
+            return $this->render('editar.html.twig', array(
+
+                'formulario' => $formulario->createView()
+
+            ));
+
+        }else{
+
+            return $this->render('ficha_mueble.html.twig', [
+
+                'mueble' => NULL
+
+            ]);
+        }
+    }
+
     #[Route('/mueble/borrar/{id}', name: 'eliminar_mueble')]
     public function borrar(ManagerRegistry $doctrine, $id): Response{
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
         $entityManager = $doctrine->getManager();
         $repositorio = $doctrine->getRepository(Mueble::class);
         $mueble = $repositorio->find($id);
@@ -48,6 +131,9 @@ final class MuebleController extends AbstractController
 
     #[Route('/mueble/insertarConTienda', name: 'insertar_con_tienda_mueble')]
     public function insertarConProvincia(ManagerRegistry $doctrine): Response{
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
         $entityManager = $doctrine->getManager();
         $tienda = new Tienda();
         $tienda->setNombre("Bricomark");
@@ -68,6 +154,9 @@ final class MuebleController extends AbstractController
 
     #[Route('/mueble/insertarSinTienda', name: 'insertar_sin_tienda_mueble')]
     public function insertarSinProvincia(ManagerRegistry $doctrine): Response{
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
         $entityManager = $doctrine->getManager();
         $repositorio = $doctrine->getRepository(Tienda::class);
 
@@ -92,6 +181,9 @@ final class MuebleController extends AbstractController
     #[Route('/mueble/{codigo?1}', name: 'ficha_mueble')]
     public function ficha(ManagerRegistry $doctrine, $codigo): Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute("app_login");
+        }
         $repositorio = $doctrine->getRepository(Mueble::class);
         $mueble = $repositorio->find($codigo);
 
@@ -119,7 +211,7 @@ final class MuebleController extends AbstractController
     //         $mueble->setAcabado($m["acabado"]);
     //         $entityManager->persist($mueble);
     //     }
-    //     try{
+    //     try{Contacto
     //         $entityManager->flush();
     //         return new Response("Contactos insertados");
     //     }catch(\Exception $e){

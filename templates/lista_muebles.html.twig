@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
+{% block title %}Lista de muebles{% endblock %}
 {% block body %}
 	<h1>Busqueda de Muebles</h1>
 	<p>Página de busqueda por tipo</p>
 	{% for mueble in muebles %}
 		 {{ include ('partials/datos_mueble.html.twig', {'mueble': mueble})}}
 	{% endfor %}
+	<br>
+    <footer>
+        <a href="/logout" class="button">Cerrar sesión</a>
+    </footer>
 {% endblock %}

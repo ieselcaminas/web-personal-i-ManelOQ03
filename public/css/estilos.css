@@ -1,9 +1,35 @@
 body
 {
-    background-color: #99ccff;
+    background-color: #974f3d;
 }
 
-h1
-{
-    border-bottom: 1px solid black;
+h1, h4{
+    
+    color: #dfc2bb;
+    border-bottom: 1px solid rgb(202, 171, 141);
+    text-decoration: none;
+}
+
+h2, p, form, li{
+    color: #dfc2bb;
+    text-decoration: none;
+}
+
+
+button.btn {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+}
+
+a.button {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    color: black;
+    background-color: white;
+    text-decoration: none;
 }

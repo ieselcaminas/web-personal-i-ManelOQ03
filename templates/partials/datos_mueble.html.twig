@@ -5,4 +5,7 @@
     {% if mueble.tienda %}
         <li><strong>Tienda</strong>: {{ mueble.tienda.nombre }}</li>
     {% endif %}
+    <a href="/mueble/{{mueble.id}}" class="button">Ficha</a>
+    <a href="/mueble/editar/{{mueble.id}}" class="button">Editar</a>
+    <a href="/mueble/borrar/{{mueble.id}}" class="button">Borrar</a>
 </ul>
